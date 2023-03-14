@@ -24,7 +24,7 @@ class Apple:
     def draw(self):
         pyxel.blt(self.x, self.y, 0, 16, 0, self.w, self.h)
 
-    def intersects(self, u, v, w, h) -> bool:
+    def intersects(self, u, v) -> bool:
         return True if u == self.x and v == self.y else False
 
 
