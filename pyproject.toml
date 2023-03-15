@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "snek"
+version = "0.1.0"
+description = "snek demo"
+authors = ["DaringCuteSeal <daringcuteseal@gmail.com>"]
+license = "Unlicense-1.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyxel = "^1.9.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

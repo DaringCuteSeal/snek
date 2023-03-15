@@ -1,4 +1,5 @@
 import pyxel
+import os
 from enum import Enum
 
 WINDOW_WIDTH = 192
@@ -16,10 +17,7 @@ class Apple:
     Apple class that handles the apple location.
     """
     def __init__(self, x: int, y: int):
-        self.x = x
-        self.y = y
-        self.w = 8
-        self.h = 8
+        self.x, self.y, self.w, self.h = x, y, 8, 8
 
     def draw(self):
         pyxel.blt(self.x, self.y, 0, 16, 0, self.w, self.h)
@@ -27,53 +25,40 @@ class Apple:
     def intersects(self, u, v) -> bool:
         return True if u == self.x and v == self.y else False
 
-
 class SnakeSection:
     """
     Draw snake section including orienting the head.
     Also checks if something intersects it (snake crashes into itself).
     """
-
     def __init__(self, x: int, y: int, is_head: bool = False):
-        self.x = x
-        self.y = y
-        self.w = 8
-        self.h = 8
+        self.x, self.y, self.w, self.h = x, y, 8, 8
         self.is_head = is_head
 
     def draw(self, dir: Direction):
-        width = self.w
-        height = self.h
-        sprite_x = 0
-        sprite_y = 0
+        width, height, sprite_x, sprite_y = self.w, self.h, 0, 0
 
         # If this is head, we need to change and flip the sprite
         # depending on the direction.
         if self.is_head:
-            match(dir):
+            match dir:
                 case Direction.RIGHT:
-                    sprite_x = 8
-                    sprite_y = 0
+                    sprite_x, sprite_y = 8, 0
                 case Direction.LEFT:
-                    sprite_x = 8
-                    sprite_y = 0
+                    sprite_x, sprite_y = 8, 0
                     width = width * -1
                 case Direction.DOWN:
-                    sprite_x = 0
-                    sprite_y = 8
+                    sprite_x, sprite_y = 0, 8
                 case Direction.UP:
-                    sprite_x = 0
-                    sprite_y = 8
+                    sprite_x, sprite_y = 0, 8
                     height = height * -1
         pyxel.blt(self.x, self.y, 0, sprite_x, sprite_y, width, height)
 
 
 # Main loop for Everything   
-
 class App:
     def __init__(self):
         pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, capture_scale=8, title="Snake Game", fps=8)
-        pyxel.load("res.pyxres")
+        pyxel.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../res/res.pyxres"))
 
         self.setup()
         self.end = 0
@@ -86,7 +71,7 @@ class App:
 
         # Initialize snake
         self.append_snake = False
-        self.snake = []
+        self.snake: list[SnakeSection] = []
         self.snake.append(SnakeSection(32, 32, is_head=True))
         self.snake.append(SnakeSection(24, 32))
         self.snake.append(SnakeSection(16, 32))
@@ -96,7 +81,6 @@ class App:
         self.score = 0
 
     def update(self):
-
         if self.end != 1:
             if pyxel.btn(pyxel.KEY_RIGHT) and self.snake_direction != Direction.LEFT:
                 self.snake_direction = Direction.RIGHT
@@ -177,4 +161,4 @@ class App:
     def draw_score(self):
         pyxel.text(5, 5, f"Score: {self.score}", 7)
 
-App()
+App() if __name__ == "__main__" else None
