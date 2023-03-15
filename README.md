@@ -1,6 +1,6 @@
 # snek
 
-Demo Game by DaringCuteSeal. I (ezntek) am helping with project setup because she aint know how
+Demo Game by DaringCuteSeal. I (ezntek) am helping with project setup because she aint know how (i know how to, my friend wanted the code ok)
 
 ## running the demo
 
