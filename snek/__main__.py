@@ -143,7 +143,7 @@ class App:
 
     def check_collisions(self):
         # Apple
-        if self.apple.intersects(self.snake[0].x, self.snake[0].y, self.snake[0].w, self.snake[0].h):
+        if self.apple.intersects(self.snake[0].x, self.snake[0].y):
             self.append_snake = True
             self.apple.x = pyxel.ceil(pyxel.rndi(8, WINDOW_WIDTH - 8) / 8) * 8
             self.apple.y = pyxel.ceil(pyxel.rndi(8, WINDOW_HEIGHT - 8) / 8) * 8
