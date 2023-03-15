@@ -57,10 +57,12 @@ class SnakeSection:
 # Main loop for Everything   
 class App:
     def __init__(self):
-        pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, capture_scale=8, title="Snake Game", fps=8)
-        pyxel.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../res/res.pyxres"))
+        pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, capture_scale=8, title="Snake Game")
+        pyxel.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "snek/res.pyxres"))
 
         self.setup()
+        self.time_since_last_move = 0
+        self.time_last_frame = 0
         self.end = 0
 
         pyxel.run(self.update, self.draw)
@@ -77,28 +79,38 @@ class App:
         self.snake.append(SnakeSection(16, 32))
         self.snake_direction = Direction.RIGHT
 
-        # Initialize score
+        # Initialize speed and score
         self.score = 0
+        self.speed = 100
 
     def update(self):
         if self.end != 1:
-            if pyxel.btn(pyxel.KEY_RIGHT) and self.snake_direction != Direction.LEFT:
-                self.snake_direction = Direction.RIGHT
-            elif pyxel.btn(pyxel.KEY_LEFT) and self.snake_direction != Direction.RIGHT:
-                self.snake_direction = Direction.LEFT
-            elif pyxel.btn(pyxel.KEY_UP) and self.snake_direction != Direction.DOWN:
-                self.snake_direction = Direction.UP
-            elif pyxel.btn(pyxel.KEY_DOWN) and self.snake_direction != Direction.UP:
-                self.snake_direction = Direction.DOWN
-            self.move_snake()
+            time_this_frame = pyxel.frame_count
+            self.dt = time_this_frame - self.time_last_frame
+            self.time_last_frame = time_this_frame
+            self.time_since_last_move += self.dt
 
+            if self.time_since_last_move * 10 >= self.speed:
+                self.time_since_last_move = 0
+            
+                if pyxel.btn(pyxel.KEY_RIGHT) and self.snake_direction != Direction.LEFT:
+                    self.snake_direction = Direction.RIGHT
+                elif pyxel.btn(pyxel.KEY_LEFT) and self.snake_direction != Direction.RIGHT:
+                    self.snake_direction = Direction.LEFT
+                elif pyxel.btn(pyxel.KEY_UP) and self.snake_direction != Direction.DOWN:
+                    self.snake_direction = Direction.UP
+                elif pyxel.btn(pyxel.KEY_DOWN) and self.snake_direction != Direction.UP:
+                    self.snake_direction = Direction.DOWN
+
+                self.move_snake()
+            
     def draw(self):
         pyxel.cls(0)
         self.apple.draw()
 
         for s in self.snake:
             s.draw(self.snake_direction)
-        
+
         self.check_collisions()
         if self.end == 1:
             pyxel.rect(35, 35, 120, 20, 9)
@@ -148,6 +160,7 @@ class App:
             self.apple.x = pyxel.ceil(pyxel.rndi(8, WINDOW_WIDTH - 8) / 8) * 8
             self.apple.y = pyxel.ceil(pyxel.rndi(8, WINDOW_HEIGHT - 8) / 8) * 8
             self.score += 1
+            self.speed -= 1
 
         # Snake (with the edge of screen)
         if self.snake[0].x > WINDOW_WIDTH - 8 or self.snake[0].x < 1 or self.snake[0].y > WINDOW_HEIGHT - 8 or self.snake[0].y < 1: # what the hell?
