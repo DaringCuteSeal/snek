@@ -1,4 +1,5 @@
 import pyxel
+import os
 from enum import Enum
 
 WINDOW_WIDTH = 192
@@ -24,13 +25,11 @@ class Apple:
     def intersects(self, u, v) -> bool:
         return True if u == self.x and v == self.y else False
 
-
 class SnakeSection:
     """
     Draw snake section including orienting the head.
     Also checks if something intersects it (snake crashes into itself).
     """
-
     def __init__(self, x: int, y: int, is_head: bool = False):
         self.x, self.y, self.w, self.h = x, y, 8, 8
         self.is_head = is_head
@@ -56,11 +55,10 @@ class SnakeSection:
 
 
 # Main loop for Everything   
-
 class App:
     def __init__(self):
         pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, capture_scale=8, title="Snake Game", fps=8)
-        pyxel.load("res.pyxres")
+        pyxel.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../res/res.pyxres"))
 
         self.setup()
         self.end = 0
@@ -83,7 +81,6 @@ class App:
         self.score = 0
 
     def update(self):
-
         if self.end != 1:
             if pyxel.btn(pyxel.KEY_RIGHT) and self.snake_direction != Direction.LEFT:
                 self.snake_direction = Direction.RIGHT
