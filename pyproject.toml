@@ -3,7 +3,7 @@ name = "snek"
 version = "0.1.0"
 description = "snek demo"
 authors = ["DaringCuteSeal <daringcuteseal@gmail.com>"]
-license = "Apache-2.0"
+license = "Unlicense-1.0"
 readme = "README.md"
 
 [tool.poetry.dependencies]
