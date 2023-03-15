@@ -73,7 +73,7 @@ class App:
 
         # Initialize snake
         self.append_snake = False
-        self.snake = []
+        self.snake: list[SnakeSection] = []
         self.snake.append(SnakeSection(32, 32, is_head=True))
         self.snake.append(SnakeSection(24, 32))
         self.snake.append(SnakeSection(16, 32))
