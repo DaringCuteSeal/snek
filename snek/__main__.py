@@ -58,7 +58,7 @@ class SnakeSection:
 class App:
     def __init__(self):
         pyxel.init(WINDOW_WIDTH, WINDOW_HEIGHT, capture_scale=8, title="Snake Game")
-        pyxel.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "snek/res.pyxres"))
+        pyxel.load(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../res/res.pyxres"))
 
         self.setup()
         self.time_since_last_move = 0
